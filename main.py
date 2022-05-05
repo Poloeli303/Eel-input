@@ -50,10 +50,6 @@ vy = 0 #y velocity of player
 keys = [False, False, False, False] #this list holds whether each key has been pressed
 isOnGround = False #this variable stops gravity from pulling you down more when on a platform
 
-#jump = pygame.mixer.Sound('jump.wav')
-#music = pygame.mixer.music.load('music.wav')
-#pygame.mixer.music.play(-1)
-
 #animation variables variables
 frameWidth = 47
 frameHeight = 52
@@ -61,12 +57,6 @@ RowNum = 0 #for left animation, this will need to change for other animations
 frameNum = 0
 ticker = 0
 
-p1 = Rectangular(400, 600)
-p2 = Rectangular(100, 750)
-p3 = Rectangular(250, 650)
-p4 = Rectangular(525, 500)
-p5  = Rectangular(300, 400)
-s1 = Square(450,450)
 while not gameover: #GAME LOOP############################################################
     clock.tick(60) #FPS
   
@@ -82,8 +72,9 @@ while not gameover: #GAME LOOP##################################################
                 keys[RIGHT]=True
             elif event.key == pygame.K_w:
                 keys[UP]=True
+            elif event.key == pygame.K_s:
+                keys[DOWN]=True
            
-                #MO: here too, you need a key up check for ALL SIX buttons you're usingj
         if event.type == pygame.KEYUP: #keyboard input
             if event.key == pygame.K_a:
                 keys[LEFT]=False
@@ -91,6 +82,8 @@ while not gameover: #GAME LOOP##################################################
                 keys[RIGHT]=False
             elif event.key == pygame.K_w:
                 keys[UP]=False
+            elif event.key == pygame.K_s:
+                keys[DOWN]=False
 
                 
     
@@ -101,108 +94,41 @@ while not gameover: #GAME LOOP##################################################
     #LEFT MOVEMENT
     if keys[LEFT]==True:
         vx=-3
+        vy=0
         direction = LEFT
     elif keys[RIGHT]==True:
         vx=3
+        vy=0
         direction = RIGHT
     
-    #turn off velocity
-    else:
-        vx = 0
-        
+
         
       #JUMPING  
-    if keys[UP] == True and isOnGround == True: 
-        vy = -8
-        isOnGround = False
+    if keys[UP]==True:
+        vy=-3
+        vx=0
         direction = UP
-        #pygame.mixer.Sound.play(jump)
- 
-    #COLLISION
         
-    isOnGround = False
-    if p1.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = p1.collide(Px, Py) - 60 
-
-    elif p2.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = p2.collide(Px, Py)  - 60
-     
-    elif p3.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = p3.collide(Px, Py)  - 60
-        
-    elif p4.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = p4.collide(Px, Py)  - 60
-        
-    elif p5.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = p5.collide(Px, Py)  - 60
-        
-    elif s1.collide(Px, Py) != False:
-        isOnGround = True
-        vy = 0
-        Py = s1.collide(Px, Py)  -60
-    print(isOnGround)
-    #stop falling if on bottom of game screen
-    if Py > 750:
-        isOnGround = True
-        vy = 0
-        Py = 750
-    
-    #gravity
-    if isOnGround == False:
-        vy+=.3 #notice this grows over time, aka ACCELERATION
+      #DOWN
+    if keys[DOWN]==True:
+        vy=+3
+        vy=0
+        direction = DOWN
     
 
     #update player position
     Px+=vx 
     Py+=vy
-      #ANIMATION-------------------------------------------------------------------
-        
-    # Update Animation Information
-    # Only animate when in motion
-    if vx>0:
-        RowNum = 0
-    if vx < 0: #left animation
-        RowNum = 2
-        ticker+=1
-        if ticker%10==0:
-          frameNum+=1
-           
-        if frameNum>3: 
-           frameNum = 0
-           
-    if vx > 0: #left animation
-        RowNum = 3
-        ticker+=1
-        if ticker%10==0:
-          frameNum+=1
-           
-        if frameNum>3: 
-           frameNum = 0
-  
+      
     # RENDER Section--------------------------------------------------------------------------------
             
     screen.fill((0,0,0)) #wipe screen so it doesn't smear
-    pygame.draw.rect(screen, (purple), (Px, Py, 20, 40))
+    pygame.draw.rect(screen, (purple), (Px, Py, 25, 25))
     #screen.blit(Link, (Px, Py), (frameWidth*frameNum, RowNum*frameHeight, frameWidth, frameHeight))
 
     
     #class platforms
-    p1.draw()
-    p2.draw()
-    p3.draw()
-    p4.draw()
-    p5.draw()
-    s1.draw()
+    
     
     pygame.display.flip()#this actually puts the pixel on the screen
     
