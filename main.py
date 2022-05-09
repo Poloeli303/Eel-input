@@ -57,40 +57,43 @@ while not gameover: #GAME LOOP##################################################
             gameover = True
       
         if event.type == pygame.KEYDOWN: #keyboard input
-            if event.key == pygame.K_a:
-                keys[LEFT]=True
-            elif event.key == pygame.K_d:
-                keys[RIGHT]=True
-            elif event.key == pygame.K_w:
-                keys[UP]=True
-            elif event.key == pygame.K_s:
-                keys[DOWN]=True
             if event.key == pygame.K_LEFT:
-                second[LEFT]=False
+                keys[LEFT]=True
             elif event.key == pygame.K_RIGHT:
-                second[RIGHT]=False
+                keys[RIGHT]=True
             elif event.key == pygame.K_UP:
-                second[UP]=False
+                keys[UP]=True
+            elif event.key == pygame.K_DOWN:
+                keys[DOWN]=True
+            if event.key == pygame.K_a:
+                second[LEFT]=True
+            elif event.key == pygame.K_d:
+                second[RIGHT]=True
+            elif event.key == pygame.K_w:
+                second[UP]=True
+            elif event.key == pygame.K_s:
+                second[DOWN]=True
            
         if event.type == pygame.KEYUP: #keyboard input
-            if event.key == pygame.K_a:
-                keys[LEFT]=False
-            elif event.key == pygame.K_d:
-                keys[RIGHT]=False
-            elif event.key == pygame.K_w:
-                keys[UP]=False
-            elif event.key == pygame.K_s:
-                keys[DOWN]=False
             if event.key == pygame.K_LEFT:
-                second[LEFT]=False
+                keys[LEFT]=False
             elif event.key == pygame.K_RIGHT:
-                second[RIGHT]=False
+                keys[RIGHT]=False
             elif event.key == pygame.K_UP:
+                keys[UP]=False
+            elif event.key == pygame.K_DOWN:
+                keys[DOWN]=False
+            if event.key == pygame.K_a:
+                second[LEFT]=False
+            elif event.key == pygame.K_d:
+                second[RIGHT]=False
+            elif event.key == pygame.K_w:
                 second[UP]=False
+            elif event.key == pygame.K_s:
+                second[DOWN]=False
                 
     
-       
-          
+    
     #physics section--------------------------------------------------------------------
     
     #LEFT MOVEMENT
