@@ -16,46 +16,37 @@ LEFT=0
 RIGHT=1
 UP = 2
 DOWN = 3
-
-#platform class
-
-class Rectangular:
-    def __init__ (self, xpos, ypos):
-        self.xpos = xpos
-        self.ypos = ypos
-    def draw(self):
-        pygame.draw.rect(screen, (red),(self.xpos, self.ypos, 100, 20))
-    def collide(self, x, y):
-        if x>self.xpos and x<self.xpos+100 and y+40> self.ypos and y +20 < self.ypos + 20:
-            return self.ypos
-        else:
-            return False
-class Square:
-    def __init__ (self, xpos, ypos):
-        self.xpos = xpos
-        self.ypos = ypos
-    def draw(self):
-        pygame.draw.rect(screen, (red),(self.xpos, self.ypos, 20, 20))
-    def collide(self, x, y):
-        if x>self.xpos and x<self.xpos+100 and y+40> self.ypos and y+40 < self.ypos + 20:
-            return self.ypos
-        else:
-            return False
+w = 4
+a = 5
+d = 6
+s = 7
 
 #player variables
 Px= 600 #xpos of player
 Py= 700 #ypos of player
+Px2= 500
+Py2= 700 
 vx = 0 #x velocity of player
 vy = 0 #y velocity of player
+vx2 = 0
+vy2 = 0
 keys = [False, False, False, False] #this list holds whether each key has been pressed
-isOnGround = False #this variable stops gravity from pulling you down more when on a platform
+second = [False, False, False, False]
+
 
 #animation variables variables
 frameWidth = 47
 frameHeight = 52
+frameWidth2 = 47
+frameHeight2 = 52
 RowNum = 0 #for left animation, this will need to change for other animations
+RowNum2 = 0
 frameNum = 0
+frameNum2 = 0
 ticker = 0
+ticker2 = 0
+direction = DOWN
+direction2 = DOWN
 
 while not gameover: #GAME LOOP############################################################
     clock.tick(60) #FPS
@@ -74,6 +65,12 @@ while not gameover: #GAME LOOP##################################################
                 keys[UP]=True
             elif event.key == pygame.K_s:
                 keys[DOWN]=True
+            if event.key == pygame.K_LEFT:
+                second[LEFT]=False
+            elif event.key == pygame.K_RIGHT:
+                second[RIGHT]=False
+            elif event.key == pygame.K_UP:
+                second[UP]=False
            
         if event.type == pygame.KEYUP: #keyboard input
             if event.key == pygame.K_a:
@@ -84,7 +81,12 @@ while not gameover: #GAME LOOP##################################################
                 keys[UP]=False
             elif event.key == pygame.K_s:
                 keys[DOWN]=False
-
+            if event.key == pygame.K_LEFT:
+                second[LEFT]=False
+            elif event.key == pygame.K_RIGHT:
+                second[RIGHT]=False
+            elif event.key == pygame.K_UP:
+                second[UP]=False
                 
     
        
@@ -96,13 +98,13 @@ while not gameover: #GAME LOOP##################################################
         vx=-3
         vy=0
         direction = LEFT
+        
+    #Right Movement
     elif keys[RIGHT]==True:
         vx=3
         vy=0
         direction = RIGHT
     
-
-        
       #JUMPING  
     if keys[UP]==True:
         vy=-3
@@ -112,22 +114,43 @@ while not gameover: #GAME LOOP##################################################
       #DOWN
     if keys[DOWN]==True:
         vy=+3
-        vy=0
+        vx=0
         direction = DOWN
     
-
+    #LEFT MOVEMENT
+    if second[LEFT]==True:
+        vx2=-3
+        vy2=0
+        direction2 = LEFT
+        
+    #Right Movement
+    elif second[RIGHT]==True:
+        vx2=3
+        vy2=0
+        direction2 = RIGHT
+    
+      #JUMPING  
+    if second[UP]==True:
+        vy2=-3
+        vx2=0
+        direction2 = UP
+        
+      #DOWN
+    if second[DOWN]==True:
+        vy2=+3
+        vx2=0
+        direction2 = DOWN
     #update player position
     Px+=vx 
     Py+=vy
+    Px2+=vx2
+    Py2+=vy2
       
     # RENDER Section--------------------------------------------------------------------------------
             
     screen.fill((0,0,0)) #wipe screen so it doesn't smear
     pygame.draw.rect(screen, (purple), (Px, Py, 25, 25))
-    #screen.blit(Link, (Px, Py), (frameWidth*frameNum, RowNum*frameHeight, frameWidth, frameHeight))
-
-    
-    #class platforms
+    pygame.draw.rect(screen, (red), (Px2, Py2, 25, 25))
     
     
     pygame.display.flip()#this actually puts the pixel on the screen
